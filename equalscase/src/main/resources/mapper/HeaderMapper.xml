@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gabriel.equalscase.mapper.HeaderMapper">
+
+    <insert id="insert" parameterType="Header" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO header (
+            tipo_registro, estabelecimento, data_geracao,
+            periodo_inicial, periodo_final, sequencia,
+            empresa_adquirente, tipo_extrato, filler,
+            versao_layout, versao_release, reservado
+        ) VALUES (
+            #{tipoRegistro}, #{estabelecimento}, #{dataGeracao},
+            #{periodoInicial}, #{periodoFinal}, #{sequencia},
+            #{empresaAdquirente}, #{tipoExtrato}, #{filler},
+            #{versaoLayout}, #{versaoRelease}, #{reservado}
+        )
+    </insert>
+
+    <select id="findById" parameterType="int" resultType="Header">
+        SELECT * FROM header WHERE id = #{id}
+    </select>
+
+</mapper>

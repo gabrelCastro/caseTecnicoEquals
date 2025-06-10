@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gabriel.equalscase.mapper.DetalheMapper">
+
+    <insert id="insert" parameterType="Detalhe" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO detalhe (
+            tipo_registro, estabelecimento, data_transacao, data_evento, hora_evento,
+            tipo_evento, tipo_transacao, numero_serie_leitor, codigo_transacao, codigo_pedido,
+            valor_total, valor_liquido, pagamento, plano, parcela, quantidade_parcelas,
+            data_prevista_pagamento, taxa_parcelamento_comprador, tarifa_boleto_comprador,
+            valor_original_transacao, taxa_parcelamento_vendedor, taxa_intermediacao,
+            tarifa_boleto_vendedor, repasse_aplicacao, valor_liquido_transacao, status_pagamento,
+            filler, meio_pagamento, instituicao_financeira, canal_entrada, leitor, meio_captura,
+            numero_logico, nsu, filler2, cartao_bin, cartao_holder, codigo_autorizacao,
+            codigo_cv, reservado
+        ) VALUES (
+            #{tipoRegistro}, #{estabelecimento}, #{dataTransacao}, #{dataEvento}, #{horaEvento},
+            #{tipoEvento}, #{tipoTransacao}, #{numeroSerieLeitor}, #{codigoTransacao}, #{codigoPedido},
+            #{valorTotal}, #{valorLiquido}, #{pagamento}, #{plano}, #{parcela}, #{quantidadeParcelas},
+            #{dataPrevistaPagamento}, #{taxaParcelamentoComprador}, #{tarifaBoletoComprador},
+            #{valorOriginalTransacao}, #{taxaParcelamentoVendedor}, #{taxaIntermediacao},
+            #{tarifaBoletoVendedor}, #{repasseAplicacao}, #{valorLiquidoTransacao}, #{statusPagamento},
+            #{filler}, #{meioPagamento}, #{instituicaoFinanceira}, #{canalEntrada}, #{leitor}, #{meioCaptura},
+            #{numeroLogico}, #{nsu}, #{filler2}, #{cartaoBin}, #{cartaoHolder}, #{codigoAutorizacao},
+            #{codigoCv}, #{reservado}
+        )
+    </insert>
+
+</mapper>
