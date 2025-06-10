@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resultado do Arquivo</title>
+</head>
+<body>
+    <h2>Header</h2>
+<ul>
+    <li th:text="'Estabelecimento: ' + ${header.estabelecimento}"></li>
+    <li th:text="'Data Geração: ' + ${header.dataGeracao}"></li>
+    <li th:text="'Período Inicial: ' + ${header.periodoInicial}"></li>
+    <li th:text="'Período Final: ' + ${header.periodoFinal}"></li>
+    <li th:text="'Sequência: ' + ${header.sequencia}"></li>
+    <li th:text="'Empresa: ' + ${header.empresaAdquirente}"></li>
+    <li th:text="'Versão Layout: ' + ${header.versaoLayout}"></li>
+</ul>
+
+
+    <h2>Detalhes</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Data Transação</th>
+            <th>Data Evento</th>
+            <th>Hora Evento</th>
+            <th>Tipo Evento</th>
+            <th>Tipo Transação</th>
+            <th>Valor Total</th>
+            <th>Valor Líquido</th>
+            <th>Status</th>
+            <th>NSU</th>
+            <th>Cartão Holder</th>
+            <th>Canal</th>
+            <th>Instituição Financeira</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="d : ${detalhes}">
+            <td th:text="${d.dataTransacao}"></td>
+            <td th:text="${d.dataEvento}"></td>
+            <td th:text="${d.horaEvento}"></td>
+            <td th:text="${d.tipoEvento}"></td>
+            <td th:text="${d.tipoTransacao}"></td>
+            <td th:text="${d.valorTotal}"></td>
+            <td th:text="${d.valorLiquido}"></td>
+            <td th:text="${d.statusPagamento}"></td>
+            <td th:text="${d.nsu}"></td>
+            <td th:text="${d.cartaoHolder}"></td>
+            <td th:text="${d.canalEntrada}"></td>
+            <td th:text="${d.instituicaoFinanceira}"></td>
+        </tr>
+    </tbody>
+</table>
+
+    <h2>Trailer</h2>
+    <p th:text="'Total de registros: ' + ${trailer.totalRegistro}"></p>
+</body>
+</html>
