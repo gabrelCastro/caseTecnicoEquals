@@ -58,3 +58,10 @@ CREATE TABLE detalhe (
     codigo_cv VARCHAR(32),
     reservado CHAR(139)
 );
+
+CREATE TABLE trailer (
+    id SERIAL PRIMARY KEY,
+    tipo_registro CHAR(1) NOT NULL CHECK (tipo_registro = '9'),
+    total_registro INT NOT NULL,
+    reservado CHAR(518)
+);
