@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS header;
+DROP TABLE IF EXISTS detalhe;
+DROP TABLE IF EXISTS trailer;
+
 CREATE TABLE header (
     id SERIAL PRIMARY KEY,
     tipo_registro CHAR(1) NOT NULL CHECK (tipo_registro = '0'),
