@@ -7,5 +7,5 @@ import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
 
 @Mapper
 public interface DetalheMapperMasterVisa extends DetalheMapper<DetalheMasterVisa>{
-
+    
 }

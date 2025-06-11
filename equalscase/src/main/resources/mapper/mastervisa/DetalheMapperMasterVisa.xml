@@ -22,6 +22,39 @@
         SELECT * FROM detalhe
     </select>
 
+    <select id="buscarPaginado" resultType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
+        SELECT * FROM detalhe
+        <where>
+        <if test="dataInicial != null and dataInicial != ''">
+            AND data_transacao &gt;= #{dataInicial}::date
+        </if>
+        <if test="dataFinal != null and dataFinal != ''">
+            AND data_transacao &lt;= #{dataFinal}::date
+        </if>
+        <if test="instituicao != null and instituicao != ''">
+            AND instituicao_financeira = #{instituicao}
+        </if>
+    </where>
+        ORDER BY id
+        LIMIT #{tamanho} OFFSET #{offset}
+    </select>
+
+
+        <select id="contarFiltrado" resultType="int">
+        SELECT COUNT(*)
+        FROM detalhe
+            <where>
+                <if test="dataInicial != null and dataInicial != ''">
+                    AND data_transacao &gt;= #{dataInicial}::date
+                </if>
+                <if test="dataFinal != null and dataFinal != ''">
+                    AND data_transacao &lt;= #{dataFinal}::date
+                </if>
+                <if test="instituicao != null and instituicao != ''">
+                    AND instituicao_financeira = #{instituicao}
+                </if>
+            </where>
+        </select>
 
 </mapper>
 

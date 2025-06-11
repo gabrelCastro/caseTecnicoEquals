@@ -173,3 +173,64 @@ input[type="date"]:focus {
     justify-content: center;
     display: flex;
 }
+
+
+/* Envio  */
+
+.caixaPrincipal{
+    margin-top: 5vw;
+    width: 40vw;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1vw;
+    padding: 1.5vw;
+    border: 0.5vw solid rgb(0, 183, 255);
+}
+
+.tituloEscolherArquivo{
+    margin-top: 0.5vw;
+    margin-bottom: 0.9vw;
+    color: rgb(58, 58, 58);
+}
+
+.formularioEnviarArquivo{
+    display: flex;
+    flex-direction: column;
+}
+
+.formularioEnviarArquivo button{
+    margin-top: 1.2vw;
+    width: 13vw;
+    padding: 0.5vw;
+    background-color: #0084db;
+    color: white;
+    font-size: 1.2vw;
+    border-radius: 0.5vw;
+}
+
+.formularioEnviarArquivo button:hover{
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+.tabela-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.paginacao {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.paginacao a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.paginacao a:hover {
+    text-decoration: underline;
+}

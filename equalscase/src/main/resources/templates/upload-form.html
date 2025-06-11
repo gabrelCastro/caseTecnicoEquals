@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/style.css}">
 <head>
     <title>Upload de Arquivo</title>
 </head>
 <body>
-    <h1>Upload de Arquivo</h1>
-    <form method="post" enctype="multipart/form-data" action="/processar">
-        <input type="file" name="file" required>
-        <button type="submit">Enviar</button>
-    </form>
+     <header>
+        <div class="escritoRelatorio">RELATÓRIO DE VENDAS</div>
+        <img th:src="@{/img/logoEquals.png}" alt="">
+    </header>
+
+    <div class="caixaPrincipal">
+        <h2 class="tituloEscolherArquivo">ESCOLHA O ARQUVO</h2>
+        <form class="formularioEnviarArquivo" method="post" enctype="multipart/form-data" action="/processar">
+            <input type="file" name="file" required>
+            <button type="submit">ENVIAR ARQUIVO</button>
+        </form>
+    </div>
 
     <p th:if="${erro}" th:text="${erro}" style="color:red;"></p>
 </body>

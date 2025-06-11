@@ -90,14 +90,24 @@ public class ArquivoWebController {
     }
 
     @GetMapping("/dados")
-    public String verDados(Model model) {
+    public String verDados(@RequestParam(defaultValue = "0") int pagina, @RequestParam(required = false) String dataInicial,
+        @RequestParam(required = false) String dataFinal,
+        @RequestParam(required = false) String instituicao,Model model) {
+        int tamanhoPagina = 25;
+        int offset = pagina * tamanhoPagina;
         Header header =  headerMapper.findFirst(); // Exemplo: você deve popular isso com dados reais
         Trailer trailer = trailerMapper.findFirst(); // Também precisa ser carregado se for usado na view
-        List<DetalheMasterVisa> detalhes = detalheMapper.findAll(); // Consulta os detalhes no banco
+        List<DetalheMasterVisa> detalhes = detalheMapper.buscarPaginado(dataInicial, dataFinal, instituicao,offset, tamanhoPagina); // Consulta os detalhes no banco
+        int totalRegistros = detalheMapper.contarFiltrado(dataInicial, dataFinal, instituicao); 
 
         model.addAttribute("header", header);      // se for usar na view
         model.addAttribute("trailer", trailer);    // idem
         model.addAttribute("detalhes", detalhes);  // lista para a tabela
+        model.addAttribute("paginaAtual", pagina);
+        model.addAttribute("instituicao", instituicao);
+        model.addAttribute("dataInicial", dataInicial);
+        model.addAttribute("dataFinal", dataFinal);
+        model.addAttribute("temProximaPagina", (offset + tamanhoPagina) < totalRegistros);
 
         return "resultado"; // thymeleaf procura por resultado.html em src/main/resources/templates/
 }
