@@ -6,13 +6,39 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import com.gabriel.equalscase.model.Detalhe;
+import com.gabriel.equalscase.model.Header;
+import com.gabriel.equalscase.model.Trailer;
 
-public class DetalheParser {
+public class LeitorMasterVisa implements LeitorVendas{
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HHmmss");
 
-    public static Detalhe parse(String linha) {
+    @Override
+    public Header lerHeader(String linha) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        Header h = new Header();
+
+        h.setTipoRegistro(linha.substring(0, 1));
+        h.setEstabelecimento(Long.parseLong(linha.substring(1, 11)));
+        h.setDataGeracao(LocalDate.parse(linha.substring(11, 19), df));
+        h.setPeriodoInicial(LocalDate.parse(linha.substring(19, 27), df));
+        h.setPeriodoFinal(LocalDate.parse(linha.substring(27, 35), df));
+        h.setSequencia(Integer.parseInt(linha.substring(35, 42)));
+        h.setEmpresaAdquirente(linha.substring(42, 47).trim());
+        h.setTipoExtrato(linha.substring(47, 49).trim());
+        h.setFiller(linha.substring(49, 70).trim());
+        h.setVersaoLayout(linha.substring(70, 73).trim());
+        h.setVersaoRelease(linha.substring(73, 78).trim());
+        h.setReservado(linha.length() >= 531 ? linha.substring(78, 531) : linha.substring(78));
+
+
+        return h;
+    }
+
+    @Override
+    public Detalhe lerDetalhe(String linha) {
         Detalhe d = new Detalhe();
 
         d.setTipoRegistro(linha.substring(0, 1));
@@ -55,16 +81,25 @@ public class DetalheParser {
         d.setCodigoAutorizacao(linha.substring(353, 359));
         d.setCodigoCv(linha.substring(359, 391).trim());
         d.setReservado(linha.length() >= 530 ? linha.substring(391, 530) : linha.substring(391));
-
-
         return d;
     }
 
-    private static BigDecimal parseDecimal(String value) {
+    @Override
+    public Trailer lerTrailer(String linha) {
+        Trailer t = new Trailer();
+        t.setTipoRegistro(linha.substring(0, 1));
+        t.setTotalRegistro(Integer.parseInt(linha.substring(1, 12)));
+        t.setReservado(linha.substring(12, 530));
+        return t;
+    }
+
+
+    private BigDecimal parseDecimal(String value) {
         value = value.trim();
         if (value.isEmpty() || !value.matches("\\d+")) {
             return BigDecimal.ZERO; 
         }
         return new BigDecimal(value).movePointLeft(2);
     }
+
 }

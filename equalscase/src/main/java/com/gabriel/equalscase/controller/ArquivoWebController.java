@@ -1,15 +1,25 @@
 package com.gabriel.equalscase.controller;
 
-import com.gabriel.equalscase.mapper.*;
-import com.gabriel.equalscase.model.*;
-import com.gabriel.equalscase.parser.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.util.*;
+import com.gabriel.equalscase.mapper.DetalheMapper;
+import com.gabriel.equalscase.mapper.HeaderMapper;
+import com.gabriel.equalscase.mapper.TrailerMapper;
+import com.gabriel.equalscase.model.Detalhe;
+import com.gabriel.equalscase.model.Header;
+import com.gabriel.equalscase.model.Trailer;
+import com.gabriel.equalscase.parser.LeitorMasterVisa;
+import com.gabriel.equalscase.parser.LeitorVendas;
 
 @Controller
 public class ArquivoWebController {
@@ -43,22 +53,23 @@ public class ArquivoWebController {
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String linha;
+            LeitorVendas leitor = new LeitorMasterVisa();
 
             while ((linha = reader.readLine()) != null) {
                 if (linha.isEmpty()) continue; // Se a linha estiver vazia, pula
 
                 switch (linha.charAt(0)) { // Olha o primeiro caracter da linha para verificar qual o tipo
                     case '0':
-                        header = HeaderParser.parse(linha); // Manda a linha lida para o parser do Header
+                        header = leitor.lerHeader(linha); // Manda a linha lida para o parser do Header
                         headerMapper.insert(header); // Chama o Mapper que por sua vez vai executar o comando no XML
                         break;
                     case '1':
-                        Detalhe detalhe = DetalheParser.parse(linha);// Manda a linha lida para o parser do Detalhe
+                        Detalhe detalhe = leitor.lerDetalhe(linha);// Manda a linha lida para o parser do Detalhe
                         detalheMapper.insert(detalhe); // Chama o Mapper que por sua vez vai executar o comando no XML
                         detalhes.add(detalhe);
                         break;
                     case '9':
-                        trailer = TrailerParser.parse(linha); // Manda a linha lida para o parser do Trailer
+                        trailer = leitor.lerTrailer(linha); // Manda a linha lida para o parser do Trailer
                         trailerMapper.insert(trailer); // Chama o Mapper que por sua vez vai executar o comando no XML
                         break;
                 }
