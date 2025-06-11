@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gabriel.equalscase.mapper.mastervisa.DetalheMapperMasterVisa">
+
+    <insert id="insert" parameterType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
+        INSERT INTO detalhe (
+            <include refid="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns.CamposDetalheBase"/>,
+            canal_entrada, leitor, meio_captura, numero_logico, nsu,
+            filler2, cartao_bin, cartao_holder, codigo_autorizacao, codigo_cv, reservado
+        ) VALUES (
+            <include refid="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns.ValoresDetalheBase"/>,
+            #{canalEntrada}, #{leitor}, #{meioCaptura}, #{numeroLogico}, #{nsu},
+            #{filler2}, #{cartaoBin}, #{cartaoHolder}, #{codigoAutorizacao}, #{codigoCv}, #{reservado}
+        )
+    </insert>
+
+</mapper>

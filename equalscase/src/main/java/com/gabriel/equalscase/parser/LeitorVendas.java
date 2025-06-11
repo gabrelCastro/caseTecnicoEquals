@@ -1,8 +1,8 @@
 package com.gabriel.equalscase.parser;
 
-import com.gabriel.equalscase.model.Detalhe;
-import com.gabriel.equalscase.model.Header;
-import com.gabriel.equalscase.model.Trailer;
+import com.gabriel.equalscase.model.base.Detalhe;
+import com.gabriel.equalscase.model.base.Header;
+import com.gabriel.equalscase.model.base.Trailer;
 
 public interface LeitorVendas {
     Header lerHeader(String linha);

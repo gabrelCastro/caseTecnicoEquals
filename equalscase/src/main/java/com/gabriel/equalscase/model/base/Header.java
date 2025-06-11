@@ -1,4 +1,4 @@
-package com.gabriel.equalscase.model;
+package com.gabriel.equalscase.model.base;
 
 import java.time.LocalDate;
 

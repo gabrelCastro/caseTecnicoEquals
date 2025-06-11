@@ -5,9 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import com.gabriel.equalscase.model.Detalhe;
-import com.gabriel.equalscase.model.Header;
-import com.gabriel.equalscase.model.Trailer;
+import com.gabriel.equalscase.model.base.Detalhe;
+import com.gabriel.equalscase.model.base.Header;
+import com.gabriel.equalscase.model.base.Trailer;
+import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
+import com.gabriel.equalscase.model.visamaster.HeaderMasterVisa;
+import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
 
 public class LeitorMasterVisa implements LeitorVendas{
 
@@ -18,7 +21,7 @@ public class LeitorMasterVisa implements LeitorVendas{
     public Header lerHeader(String linha) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-        Header h = new Header();
+        HeaderMasterVisa h = new HeaderMasterVisa();
 
         h.setTipoRegistro(linha.substring(0, 1));
         h.setEstabelecimento(Long.parseLong(linha.substring(1, 11)));
@@ -39,7 +42,7 @@ public class LeitorMasterVisa implements LeitorVendas{
 
     @Override
     public Detalhe lerDetalhe(String linha) {
-        Detalhe d = new Detalhe();
+        DetalheMasterVisa d = new DetalheMasterVisa();
 
         d.setTipoRegistro(linha.substring(0, 1));
         d.setEstabelecimento(Long.parseLong(linha.substring(1, 11)));
@@ -86,7 +89,7 @@ public class LeitorMasterVisa implements LeitorVendas{
 
     @Override
     public Trailer lerTrailer(String linha) {
-        Trailer t = new Trailer();
+        TrailerMasterVisa t = new TrailerMasterVisa();
         t.setTipoRegistro(linha.substring(0, 1));
         t.setTotalRegistro(Integer.parseInt(linha.substring(1, 12)));
         t.setReservado(linha.substring(12, 530));

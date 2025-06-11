@@ -3,9 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gabriel.equalscase.mapper.TrailerMapper">
+<mapper namespace="com.gabriel.equalscase.mapper.mastervisa.TrailerMapperMasterVisa">
 
-    <insert id="insert" parameterType="Trailer" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.gabriel.equalscase.model.visamaster.TrailerMasterVisa"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO trailer (
             tipo_registro, total_registro, reservado
         ) VALUES (

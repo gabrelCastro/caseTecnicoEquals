@@ -12,12 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gabriel.equalscase.mapper.DetalheMapper;
-import com.gabriel.equalscase.mapper.HeaderMapper;
-import com.gabriel.equalscase.mapper.TrailerMapper;
-import com.gabriel.equalscase.model.Detalhe;
-import com.gabriel.equalscase.model.Header;
-import com.gabriel.equalscase.model.Trailer;
+import com.gabriel.equalscase.mapper.base.DetalheMapper;
+import com.gabriel.equalscase.mapper.base.HeaderMapper;
+import com.gabriel.equalscase.mapper.base.TrailerMapper;
+import com.gabriel.equalscase.mapper.mastervisa.DetalheMapperMasterVisa;
+import com.gabriel.equalscase.mapper.mastervisa.HeaderMapperMasterVisa;
+import com.gabriel.equalscase.mapper.mastervisa.TrailerMapperMasterVisa;
+import com.gabriel.equalscase.model.base.Detalhe;
+import com.gabriel.equalscase.model.base.Header;
+import com.gabriel.equalscase.model.base.Trailer;
+import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
+import com.gabriel.equalscase.model.visamaster.HeaderMasterVisa;
+import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
 import com.gabriel.equalscase.parser.LeitorMasterVisa;
 import com.gabriel.equalscase.parser.LeitorVendas;
 
@@ -25,14 +31,14 @@ import com.gabriel.equalscase.parser.LeitorVendas;
 public class ArquivoWebController {
 
     // Mappers de cada entidade
-    private final HeaderMapper headerMapper;
-    private final DetalheMapper detalheMapper;
-    private final TrailerMapper trailerMapper;
+    private final HeaderMapper<HeaderMasterVisa> headerMapper;
+    private final DetalheMapper<DetalheMasterVisa> detalheMapper;
+    private final TrailerMapper<TrailerMasterVisa> trailerMapper;
 
     // Construtor do Controller, que recebe os mappers como parâmetro
-    public ArquivoWebController(HeaderMapper headerMapper,
-                                DetalheMapper detalheMapper,
-                                TrailerMapper trailerMapper) {
+    public ArquivoWebController(HeaderMapperMasterVisa headerMapper,
+                                DetalheMapperMasterVisa detalheMapper,
+                                TrailerMapperMasterVisa trailerMapper) {
         this.headerMapper = headerMapper;
         this.detalheMapper = detalheMapper;
         this.trailerMapper = trailerMapper;
@@ -47,7 +53,7 @@ public class ArquivoWebController {
     // Rota que é chamada no momento em que arquivo é enviado
     @PostMapping("/processar")
     public String processar(@RequestParam("file") MultipartFile file, Model model) {
-        Header header = null; // variável que guarda o Header
+        Header header = new HeaderMasterVisa(); // variável que guarda o Header
         Trailer trailer = null; // variável que guarda o Trailer
         List<Detalhe> detalhes = new ArrayList<>(); // Variável para guardar os detalhes
 
@@ -61,16 +67,16 @@ public class ArquivoWebController {
                 switch (linha.charAt(0)) { // Olha o primeiro caracter da linha para verificar qual o tipo
                     case '0':
                         header = leitor.lerHeader(linha); // Manda a linha lida para o parser do Header
-                        headerMapper.insert(header); // Chama o Mapper que por sua vez vai executar o comando no XML
+                        headerMapper.insert((HeaderMasterVisa) header); // Chama o Mapper que por sua vez vai executar o comando no XML
                         break;
                     case '1':
                         Detalhe detalhe = leitor.lerDetalhe(linha);// Manda a linha lida para o parser do Detalhe
-                        detalheMapper.insert(detalhe); // Chama o Mapper que por sua vez vai executar o comando no XML
+                        detalheMapper.insert((DetalheMasterVisa) detalhe); // Chama o Mapper que por sua vez vai executar o comando no XML
                         detalhes.add(detalhe);
                         break;
                     case '9':
                         trailer = leitor.lerTrailer(linha); // Manda a linha lida para o parser do Trailer
-                        trailerMapper.insert(trailer); // Chama o Mapper que por sua vez vai executar o comando no XML
+                        trailerMapper.insert((TrailerMasterVisa) trailer); // Chama o Mapper que por sua vez vai executar o comando no XML
                         break;
                 }
             }

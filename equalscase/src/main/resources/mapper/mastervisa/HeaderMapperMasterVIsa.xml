@@ -3,9 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gabriel.equalscase.mapper.HeaderMapper">
+<mapper namespace="com.gabriel.equalscase.mapper.mastervisa.HeaderMapperMasterVisa">
 
-    <insert id="insert" parameterType="Header" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO header (
             tipo_registro, estabelecimento, data_geracao,
             periodo_inicial, periodo_final, sequencia,
@@ -19,8 +20,9 @@
         )
     </insert>
 
-    <select id="findById" parameterType="int" resultType="Header">
+    <select id="findById" parameterType="int"
+            resultType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa">
         SELECT * FROM header WHERE id = #{id}
     </select>
 
-</mapper>
+</mapper> 
