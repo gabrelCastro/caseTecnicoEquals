@@ -81,15 +81,24 @@ public class ArquivoWebController {
                 }
             }
 
-            model.addAttribute("header", header);
-            model.addAttribute("detalhes", detalhes);
-            model.addAttribute("trailer", trailer);
-
-            return "resultado";
+            return "redirect:/dados";
 
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao processar: " + e.getMessage());
             return "upload-form";
         }
     }
+
+    @GetMapping("/dados")
+    public String verDados(Model model) {
+        Header header =  headerMapper.findFirst(); // Exemplo: você deve popular isso com dados reais
+        Trailer trailer = trailerMapper.findFirst(); // Também precisa ser carregado se for usado na view
+        List<DetalheMasterVisa> detalhes = detalheMapper.findAll(); // Consulta os detalhes no banco
+
+        model.addAttribute("header", header);      // se for usar na view
+        model.addAttribute("trailer", trailer);    // idem
+        model.addAttribute("detalhes", detalhes);  // lista para a tabela
+
+        return "resultado"; // thymeleaf procura por resultado.html em src/main/resources/templates/
+}
 }

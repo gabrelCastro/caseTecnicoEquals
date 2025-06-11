@@ -17,4 +17,11 @@
         )
     </insert>
 
+
+    <select id="findAll" resultType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
+        SELECT * FROM detalhe
+    </select>
+
+
 </mapper>
+

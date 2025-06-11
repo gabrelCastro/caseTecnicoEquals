@@ -5,4 +5,5 @@ import com.gabriel.equalscase.model.base.Header;
 public interface HeaderMapper<T extends Header> {
     void insert(T header);
     T findById(int id);
+    Header findFirst();
 }

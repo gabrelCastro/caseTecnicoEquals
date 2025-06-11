@@ -1,23 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Resultado do Arquivo</title>
 </head>
 <body>
-    <h2>Header</h2>
-<ul>
-    <li th:text="'Estabelecimento: ' + ${header.estabelecimento}"></li>
-    <li th:text="'Data Geração: ' + ${header.dataGeracao}"></li>
-    <li th:text="'Período Inicial: ' + ${header.periodoInicial}"></li>
-    <li th:text="'Período Final: ' + ${header.periodoFinal}"></li>
-    <li th:text="'Sequência: ' + ${header.sequencia}"></li>
-    <li th:text="'Empresa: ' + ${header.empresaAdquirente}"></li>
-    <li th:text="'Versão Layout: ' + ${header.versaoLayout}"></li>
-</ul>
+
+    <header>
+        <div class="escritoRelatorio">RELATÓRIO DE VENDAS</div>
+        <img th:src="@{/img/logoEquals.png}" alt="">
+    </header>
+
+<div class="Corpo">
+<details>
+    <summary><strong>HEADER</strong></summary>
+    <ul>
+        <li th:text="'Estabelecimento: ' + ${header.estabelecimento}"></li>
+        <li th:text="'Data Geração: ' + ${header.dataGeracao}"></li>
+        <li th:text="'Período Inicial: ' + ${header.periodoInicial}"></li>
+        <li th:text="'Período Final: ' + ${header.periodoFinal}"></li>
+        <li th:text="'Sequência: ' + ${header.sequencia}"></li>
+        <li th:text="'Empresa: ' + ${header.empresaAdquirente}"></li>
+        <li th:text="'Versão Layout: ' + ${header.versaoLayout}"></li>
+    </ul>
+</details>
 
 
-    <h2>Detalhes</h2>
-<table border="1">
+<h2 class="escritoDetalhes">DETALHES</h2>
+
+
+<div class="detalhesDosDetalhes">
+
+    <button class="botaoCamposVisiveis">CAMPOS VISÍVEIS</button>
+
+    <div class="escolherData">
+        <div class="dataEscolher">
+            <label class="labelDaData" for="dataInicio">Data Início:</label>
+            <input type="date" id="dataInicio">
+        </div>
+        <div class="dataEscolher">
+            <label class="labelDaData" for="dataFim">Data Fim:</label>
+            <input type="date" id="dataFim">
+        </div>
+    </div>
+
+    <div class="escolherInstituicao">
+    <label for="filtroInstituicao">Instituição:</label>
+    <select id="filtroInstituicao">
+        <option value="">Todas</option>
+        <option value="MASTERCARD">MASTERCARD</option>
+        <option value="VISA">VISA</option>
+        
+    </select>
+</div>
+</div>
+
+<table class="tabela-detalhes">
     <thead>
         <tr>
             <th>Data Transação</th>
@@ -52,7 +90,11 @@
     </tbody>
 </table>
 
+
     <h2>Trailer</h2>
     <p th:text="'Total de registros: ' + ${trailer.totalRegistro}"></p>
+</div>
+
+<script th:src="@{/js/resultado.js}"></script>
 </body>
 </html>

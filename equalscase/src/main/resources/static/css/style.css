@@ -1,0 +1,175 @@
+*{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin: 0px;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #005B9C 0%, #BEFFFA 100%);
+    padding: 1.5vw;
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
+}
+
+.escritoRelatorio{
+    color: #FFF;
+    font-size: 3vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+details {
+    margin: 1em 0;
+    border: 0.3vw solid #0084db;
+    border-radius: 8px;
+    padding: 0.5em;
+    background-color: #f9f9f9;
+}
+
+summary {
+    padding: 0.7vw;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+li{
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    font-size: 1.5vw;
+    font-weight:500;
+}
+
+.Corpo{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
+
+.tabela-detalhes {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tabela-detalhes thead {
+    background-color: #d0e8f2; /* Azul bebê */
+    color: #333;
+}
+
+.tabela-detalhes th,
+.tabela-detalhes td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+.tabela-detalhes tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Cinza claro */
+}
+
+.tabela-detalhes tbody tr:hover {
+    background-color: #eef6fb; /* Azul bebê mais claro no hover */
+}
+
+.escritoDetalhes{
+    margin-top: 2vw;
+    align-self: center;
+    font-size: 2vw;
+}
+
+.detalhesDosDetalhes{
+    margin: 3vw auto;
+    gap:8vw;
+    display: flex;
+    flex-direction:row;
+}
+
+.botaoCamposVisiveis{
+    color: white;
+    font-weight: 700;
+    padding: 1vw;
+    border: 0px;
+    font-size: 1.5vw;
+    border-radius: 1vw;
+    background: #0051FF;
+}
+
+.botaoCamposVisiveis:hover{
+    transform: scale(1.05);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+
+input[type="date"] {
+    width: 15vw;
+    height: 2vw;
+    padding: 10px 14px;
+    font-size: 1vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f7f9; /* cinza claro */
+    border: 1px solid #c0d7e0; /* azul bebê acinzentado */
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+input[type="date"]:hover {
+    border-color: #96c7e4; /* azul bebê mais forte */
+}
+
+input[type="date"]:focus {
+    border-color: #61b3e6;
+    box-shadow: 0 0 5px rgba(97, 179, 230, 0.5);
+    background-color: #eaf6fc;
+}
+
+
+.labelDaData{
+    font-size: 1vw;
+}
+
+
+.escolherData{
+    gap: 1vw;
+    display: flex;
+    align-items: center;
+}
+
+.dataEscolher{
+    gap:10px;
+}
+
+#filtroInstituicao{
+    width: 15vw;
+    height: 3vw;
+    padding: 10px 14px;
+    font-size: 1vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f7f9; /* cinza claro */
+    border: 1px solid #c0d7e0; /* azul bebê acinzentado */
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.escolherInstituicao{
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+}

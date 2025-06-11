@@ -25,4 +25,8 @@
         SELECT * FROM header WHERE id = #{id}
     </select>
 
+    <select id="findFirst" resultType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa">
+        SELECT * FROM header LIMIT 1
+    </select>
+
 </mapper> 
