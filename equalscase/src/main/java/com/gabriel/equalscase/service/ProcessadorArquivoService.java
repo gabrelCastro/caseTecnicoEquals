@@ -10,9 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gabriel.equalscase.mapper.base.DetalheMapper;
 import com.gabriel.equalscase.mapper.base.HeaderMapper;
 import com.gabriel.equalscase.mapper.base.TrailerMapper;
-import com.gabriel.equalscase.mapper.mastervisa.DetalheMapperMasterVisa;
-import com.gabriel.equalscase.mapper.mastervisa.HeaderMapperMasterVisa;
-import com.gabriel.equalscase.mapper.mastervisa.TrailerMapperMasterVisa;
 import com.gabriel.equalscase.model.base.Detalhe;
 import com.gabriel.equalscase.model.base.Header;
 import com.gabriel.equalscase.model.base.Trailer;
@@ -26,23 +23,26 @@ public class ProcessadorArquivoService {
     private final Map<String, DetalheMapper<? extends Detalhe>> detalheMappers;
     private final Map<String, TrailerMapper<? extends Trailer>> trailerMappers;
 
+    private final LeitorFactory leitorFactory;
+
     public ProcessadorArquivoService(
-            HeaderMapperMasterVisa headerMasterVisa,
-            DetalheMapperMasterVisa detalheMasterVisa,
-            TrailerMapperMasterVisa trailerMasterVisa
-    ) {
-        this.headerMappers = Map.of("mastervisa", headerMasterVisa);
-        this.detalheMappers = Map.of("mastervisa", detalheMasterVisa);
-        this.trailerMappers = Map.of("mastervisa", trailerMasterVisa);
+            Map<String, HeaderMapper<? extends Header>> headerMappers,
+            Map<String, DetalheMapper<? extends Detalhe>> detalheMappers,
+            Map<String, TrailerMapper<? extends Trailer>> trailerMappers,
+            LeitorFactory leitorFactory) {
+        this.headerMappers = headerMappers;
+        this.detalheMappers = detalheMappers;
+        this.trailerMappers = trailerMappers;
+        this.leitorFactory = leitorFactory;
     }
 
+    public <H extends Header, D extends Detalhe, T extends Trailer>
+    void processarArquivo(MultipartFile file, String bandeira) throws Exception {
 
-    public void processarArquivo(MultipartFile file, String bandeira) throws Exception {
-        LeitorVendas leitor = LeitorFactory.getLeitor(bandeira);
-
-        HeaderMapper<Header> headerMapper = (HeaderMapper<Header>) headerMappers.get(bandeira);
-        DetalheMapper<Detalhe> detalheMapper = (DetalheMapper<Detalhe>) detalheMappers.get(bandeira);
-        TrailerMapper<Trailer> trailerMapper = (TrailerMapper<Trailer>) trailerMappers.get(bandeira);
+        LeitorVendas<H, D, T> leitor = leitorFactory.getLeitor(bandeira);
+        HeaderMapper<H> headerMapper = (HeaderMapper<H>) headerMappers.get(bandeira + "HeaderMapper");
+        DetalheMapper<D> detalheMapper = (DetalheMapper<D>) detalheMappers.get(bandeira+ "DetalheMapper");
+        TrailerMapper<T> trailerMapper = (TrailerMapper<T>) trailerMappers.get(bandeira+ "TrailerMapper");
 
         if (headerMapper == null || detalheMapper == null || trailerMapper == null) {
             throw new IllegalArgumentException("Bandeira não suportada: " + bandeira);
@@ -62,4 +62,6 @@ public class ProcessadorArquivoService {
             }
         }
     }
+
+
 }

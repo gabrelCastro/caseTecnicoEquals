@@ -4,8 +4,8 @@ import com.gabriel.equalscase.model.base.Detalhe;
 import com.gabriel.equalscase.model.base.Header;
 import com.gabriel.equalscase.model.base.Trailer;
 
-public interface LeitorVendas {
-    public Header lerHeader(String linha);
-    public Detalhe lerDetalhe(String linha);
-    public Trailer lerTrailer(String linha);
+public interface LeitorVendas<H extends Header, D extends Detalhe, T extends Trailer> {
+    H lerHeader(String linha);
+    D lerDetalhe(String linha);
+    T lerTrailer(String linha);
 }

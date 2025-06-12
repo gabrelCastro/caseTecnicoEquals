@@ -5,9 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import com.gabriel.equalscase.model.base.Detalhe;
-import com.gabriel.equalscase.model.base.Header;
-import com.gabriel.equalscase.model.base.Trailer;
+import org.springframework.stereotype.Component;
+
 import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
 import com.gabriel.equalscase.model.visamaster.HeaderMasterVisa;
 import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
@@ -45,14 +44,14 @@ import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
  * Autor: Gabriel Ferreira
  */
 
-
-public class LeitorMasterVisa implements LeitorVendas{
+@Component("mastervisaLeitor")
+public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheMasterVisa, TrailerMasterVisa>{
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HHmmss");
 
     @Override
-    public Header lerHeader(String linha) {
+    public HeaderMasterVisa lerHeader(String linha) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
 
         HeaderMasterVisa h = new HeaderMasterVisa();
@@ -75,7 +74,7 @@ public class LeitorMasterVisa implements LeitorVendas{
     }
 
     @Override
-    public Detalhe lerDetalhe(String linha) {
+    public DetalheMasterVisa lerDetalhe(String linha) {
         DetalheMasterVisa d = new DetalheMasterVisa();
 
         d.setTipoRegistro(linha.substring(0, 1));
@@ -122,7 +121,7 @@ public class LeitorMasterVisa implements LeitorVendas{
     }
 
     @Override
-    public Trailer lerTrailer(String linha) {
+    public TrailerMasterVisa lerTrailer(String linha) {
         TrailerMasterVisa t = new TrailerMasterVisa();
         t.setTipoRegistro(linha.substring(0, 1));
         t.setTotalRegistro(Integer.parseInt(linha.substring(1, 12)));
