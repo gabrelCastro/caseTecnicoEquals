@@ -11,51 +11,43 @@ import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
 import com.gabriel.equalscase.model.visamaster.HeaderMasterVisa;
 import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
 
-
 /**
  * Implementação do parser para arquivos de vendas das bandeiras Visa e MasterCard.
  *
- * Esta classe faz parte da lógica de leitura de arquivos no padrão definido pelas bandeiras
- * Visa/MasterCard, onde cada linha do arquivo representa um tipo de registro:
- * - Tipo 0: Header
- * - Tipo 1: Detalhe
- * - Tipo 9: Trailer
+ * Essa classe interpreta linhas fixas de arquivos texto (layout padrão),
+ * convertendo-as em objetos Java do tipo:
+ * - {@link HeaderMasterVisa}
+ * - {@link DetalheMasterVisa}
+ * - {@link TrailerMasterVisa}
  *
- * Responsabilidade principal:
- * - Interpretar linhas do arquivo e convertê-las em objetos Java específicos (`HeaderMasterVisa`,
- *   `DetalheMasterVisa` e `TrailerMasterVisa`), preenchendo os dados conforme as posições fixas
- *   de cada campo no layout.
+ * Cada método lê uma linha do arquivo e extrai os dados com base em posições fixas.
+ * Os dados lidos são tipados corretamente (datas, horários, valores monetários etc.).
  *
- * Contexto de uso:
- * - Utilizada durante o processo de leitura e importação de arquivos texto, no momento em que
- *   as informações precisam ser transformadas em objetos de domínio para persistência no banco
- *   via MyBatis.
- *
- * Relacionamentos:
- * - Implementa a interface LeitorVendas, que define os métodos padrão de leitura de
- *   registros do tipo header, detalhe e trailer.
- * - Utiliza os modelos definidos em com.gabriel.equalscase.model.visamaster.
- *
- * Observações:
- * - Os campos de data e hora são convertidos utilizando `DateTimeFormatter`.
- * - Valores monetários são convertidos para `BigDecimal` com precisão de 2 casas decimais.
- * - A leitura respeita o comprimento fixo da linha conforme o layout especificado.
+ * A classe é registrada como um bean do Spring com o nome "mastervisaLeitor"
+ * e é usada dinamicamente pela {@link LeitorFactory}.
  *
  * Autor: Gabriel Ferreira
  */
-
 @Component("mastervisaLeitor")
-public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheMasterVisa, TrailerMasterVisa>{
+public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheMasterVisa, TrailerMasterVisa> {
 
+    /** Formato padrão para datas no layout (ex: 20240612) */
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+    /** Formato padrão para horários no layout (ex: 150304) */
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HHmmss");
 
+    /**
+     * Lê uma linha de header (registro tipo 0) e converte em {@link HeaderMasterVisa}.
+     *
+     * @param linha linha do arquivo com 531 caracteres no mínimo
+     * @return instância de HeaderMasterVisa preenchida com os campos extraídos
+     */
     @Override
     public HeaderMasterVisa lerHeader(String linha) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
 
         HeaderMasterVisa h = new HeaderMasterVisa();
-
         h.setTipoRegistro(linha.substring(0, 1));
         h.setEstabelecimento(Long.parseLong(linha.substring(1, 11)));
         h.setDataGeracao(LocalDate.parse(linha.substring(11, 19), df));
@@ -69,10 +61,15 @@ public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheM
         h.setVersaoRelease(linha.substring(73, 78).trim());
         h.setReservado(linha.length() >= 531 ? linha.substring(78, 531) : linha.substring(78));
 
-
         return h;
     }
 
+    /**
+     * Lê uma linha de detalhe (registro tipo 1) e converte em {@link DetalheMasterVisa}.
+     *
+     * @param linha linha do arquivo com os campos em posições fixas
+     * @return instância de DetalheMasterVisa com os campos preenchidos
+     */
     @Override
     public DetalheMasterVisa lerDetalhe(String linha) {
         DetalheMasterVisa d = new DetalheMasterVisa();
@@ -120,6 +117,12 @@ public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheM
         return d;
     }
 
+    /**
+     * Lê uma linha de trailer (registro tipo 9) e converte em {@link TrailerMasterVisa}.
+     *
+     * @param linha linha do arquivo contendo os dados finais do lote
+     * @return instância de TrailerMasterVisa preenchida
+     */
     @Override
     public TrailerMasterVisa lerTrailer(String linha) {
         TrailerMasterVisa t = new TrailerMasterVisa();
@@ -129,13 +132,17 @@ public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheM
         return t;
     }
 
-
+    /**
+     * Converte uma string numérica de valor fixo para {@link BigDecimal}, deslocando a vírgula duas casas.
+     *
+     * @param value string numérica (ex: "000000012345" → 123.45)
+     * @return valor decimal com precisão de centavos
+     */
     private BigDecimal parseDecimal(String value) {
         value = value.trim();
         if (value.isEmpty() || !value.matches("\\d+")) {
             return BigDecimal.ZERO; 
         }
-        return new BigDecimal(value).movePointLeft(2);
+        return new BigDecimal(value).movePointLeft(2); // Ex: 12345 → 123.45
     }
-
 }

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gabriel.equalscase.mapper.mastervisa.HeaderMapperMasterVisa">
 
-    <insert id="insert" parameterType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa"
-            useGeneratedKeys="true" keyProperty="id">
+    <!-- Inserção de um header (registro tipo 0) -->
+    <insert id="insert"
+            parameterType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa"
+            useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO header (
             tipo_registro, estabelecimento, data_geracao,
             periodo_inicial, periodo_final, sequencia,
@@ -20,13 +23,19 @@
         )
     </insert>
 
-    <select id="findById" parameterType="int"
+    <!-- Busca por ID -->
+    <select id="findById"
+            parameterType="int"
             resultType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa">
-        SELECT * FROM header WHERE id = #{id}
+        SELECT * FROM header
+        WHERE id = #{id}
     </select>
 
-    <select id="findFirst" resultType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa">
-        SELECT * FROM header LIMIT 1
+    <!-- Retorna o primeiro header da tabela -->
+    <select id="findFirst"
+            resultType="com.gabriel.equalscase.model.visamaster.HeaderMasterVisa">
+        SELECT * FROM header
+        LIMIT 1
     </select>
 
-</mapper> 
+</mapper>

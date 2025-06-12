@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns">
 
+    <!-- Fragmento com os nomes das colunas base do detalhe -->
     <sql id="CamposDetalheBase">
         tipo_registro, estabelecimento, data_transacao, data_evento, hora_evento,
         tipo_evento, tipo_transacao, numero_serie_leitor, codigo_transacao, codigo_pedido,
@@ -15,6 +16,7 @@
         filler, meio_pagamento, instituicao_financeira
     </sql>
 
+    <!-- Fragmento com os valores que serão inseridos nas colunas base -->
     <sql id="ValoresDetalheBase">
         #{tipoRegistro}, #{estabelecimento}, #{dataTransacao}, #{dataEvento}, #{horaEvento},
         #{tipoEvento}, #{tipoTransacao}, #{numeroSerieLeitor}, #{codigoTransacao}, #{codigoPedido},

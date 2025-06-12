@@ -4,38 +4,109 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Classe base que representa um registro de detalhe de uma transação.
+ * 
+ * Essa classe serve como superclasse para tipos específicos de detalhe, como
+ * {@code DetalheMasterVisa}, e contém todos os campos comuns usados no processamento
+ * e análise dos dados de vendas.
+ * 
+ * Os dados representam informações transacionais detalhadas como valores, datas, horários,
+ * status de pagamento, formas de pagamento, e taxas.
+ */
 public class Detalhe {
+
+    /** Identificador único do detalhe (gerado pelo banco) */
     private Integer id;
+
+    /** Tipo do registro, geralmente '1' para linhas de detalhe */
     private String tipoRegistro;
+
+    /** Código do estabelecimento onde a transação ocorreu */
     private Long estabelecimento;
+
+    /** Data da transação */
     private LocalDate dataTransacao;
+
+    /** Data do evento relacionado à transação */
     private LocalDate dataEvento;
+
+    /** Hora do evento (ex: hora da captura ou confirmação) */
     private LocalTime horaEvento;
+
+    /** Tipo de evento da transação (ex: autorização, cancelamento) */
     private String tipoEvento;
+
+    /** Tipo da transação (ex: crédito, débito, etc.) */
     private String tipoTransacao;
+
+    /** Número de série do leitor utilizado (quando aplicável) */
     private String numeroSerieLeitor;
+
+    /** Código único da transação no sistema */
     private String codigoTransacao;
+
+    /** Código do pedido associado à transação */
     private String codigoPedido;
+
+    /** Valor total da transação */
     private BigDecimal valorTotal;
+
+    /** Valor líquido recebido após descontos */
     private BigDecimal valorLiquido;
+
+    /** Forma de pagamento utilizada (ex: cartão, boleto) */
     private String pagamento;
+
+    /** Plano de pagamento (ex: parcelado, à vista) */
     private String plano;
+
+    /** Número da parcela atual (ex: 1 de 3) */
     private String parcela;
+
+    /** Quantidade total de parcelas */
     private String quantidadeParcelas;
+
+    /** Data prevista para o pagamento ao vendedor */
     private LocalDate dataPrevistaPagamento;
+
+    /** Taxa paga pelo comprador em transações parceladas */
     private BigDecimal taxaParcelamentoComprador;
+
+    /** Tarifa do boleto paga pelo comprador (se aplicável) */
     private BigDecimal tarifaBoletoComprador;
+
+    /** Valor original da transação antes de taxas/descontos */
     private BigDecimal valorOriginalTransacao;
+
+    /** Taxa paga pelo vendedor em parcelamentos */
     private BigDecimal taxaParcelamentoVendedor;
+
+    /** Taxa de intermediação da transação (ex: comissão da plataforma) */
     private BigDecimal taxaIntermediacao;
+
+    /** Tarifa de boleto cobrada do vendedor (se houver) */
     private BigDecimal tarifaBoletoVendedor;
+
+    /** Valor de repasse de alguma aplicação financeira associada */
     private BigDecimal repasseAplicacao;
+
+    /** Valor líquido final após todas as deduções */
     private BigDecimal valorLiquidoTransacao;
+
+    /** Status atual do pagamento (ex: concluído, pendente, cancelado) */
     private String statusPagamento;
+
+    /** Espaço reservado ou ignorado (usado para alinhamento de layout fixo) */
     private String filler;
+
+    /** Meio de pagamento utilizado (ex: máquina TEF, app, site) */
     private String meioPagamento;
+
+    /** Instituição financeira que processou a transação */
     private String instituicaoFinanceira;
-    
+
+    // Getters e setters abaixo...
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }

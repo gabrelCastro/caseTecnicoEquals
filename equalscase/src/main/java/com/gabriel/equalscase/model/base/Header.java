@@ -2,23 +2,57 @@ package com.gabriel.equalscase.model.base;
 
 import java.time.LocalDate;
 
-
+/**
+ * Classe base que representa o cabeçalho (header) de um arquivo de vendas.
+ * 
+ * O Header contém informações gerais sobre o arquivo, como o estabelecimento,
+ * o período de referência, a data de geração, e metadados como sequência e versão do layout.
+ * 
+ * Essa classe pode ser estendida por classes específicas de bandeiras, como {@code HeaderMasterVisa}.
+ */
 public class Header {
 
+    /** Identificador único do header no banco de dados */
     private Integer id;
+
+    /** Tipo do registro — geralmente '0' para header */
     private String tipoRegistro;
+
+    /** Código do estabelecimento ao qual o relatório pertence */
     private Long estabelecimento;
+
+    /** Data em que o arquivo foi gerado */
     private LocalDate dataGeracao;
+
+    /** Data inicial do período de vendas incluído no relatório */
     private LocalDate periodoInicial;
+
+    /** Data final do período de vendas incluído no relatório */
     private LocalDate periodoFinal;
+
+    /** Número sequencial do arquivo (incremental por geração) */
     private Integer sequencia;
+
+    /** Código ou nome da empresa adquirente responsável pelo processamento */
     private String empresaAdquirente;
+
+    /** Tipo de extrato (ex: analítico, sintético) */
     private String tipoExtrato;
+
+    /** Campo reservado para alinhamento de layout ou informações ignoradas */
     private String filler;
+
+    /** Versão do layout utilizado no arquivo */
     private String versaoLayout;
+
+    /** Versão do release associado ao layout */
     private String versaoRelease;
+
+    /** Campo reservado para informações futuras ou de uso interno */
     private String reservado;
-    
+
+    // Getters e Setters
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 

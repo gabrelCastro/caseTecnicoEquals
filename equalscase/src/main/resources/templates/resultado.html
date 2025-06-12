@@ -1,186 +1,189 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
     <title>Resultado do Arquivo</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
-<header>
-    <div class="escritoRelatorio">RELATÓRIO DE VENDAS</div>
-    <img th:src="@{/img/logoEquals.png}" alt="">
-</header>
+    <header>
+        <div class="escritoRelatorio">RELATÓRIO DE VENDAS</div>
+        <img th:src="@{/img/logoEquals.png}" alt="Logo Equals">
+    </header>
 
-<div class="Corpo">
-<details>
-    <summary><strong>HEADER</strong></summary>
-    <ul>
-        <li th:text="'Estabelecimento: ' + ${header.estabelecimento}"></li>
-        <li th:text="'Data Geração: ' + ${header.dataGeracao}"></li>
-        <li th:text="'Período Inicial: ' + ${header.periodoInicial}"></li>
-        <li th:text="'Período Final: ' + ${header.periodoFinal}"></li>
-        <li th:text="'Sequência: ' + ${header.sequencia}"></li>
-        <li th:text="'Empresa: ' + ${header.empresaAdquirente}"></li>
-        <li th:text="'Tipo do Extrato: ' + ${header.tipoExtrato}"></li>
-        <li th:text="'Filler: ' + ${header.filler}"></li>
-        <li th:text="'Versão Layout: ' + ${header.versaoLayout}"></li>
-        <li th:text="'Versao Release: ' + ${header.versaoRelease}"></li>
-    </ul>
-</details>
+    <div class="Corpo">
+        
+        <!-- HEADER -->
+        <details>
+            <summary><strong>HEADER</strong></summary>
+            <ul>
+                <li th:text="'Estabelecimento: ' + ${header.estabelecimento}"></li>
+                <li th:text="'Data Geração: ' + ${header.dataGeracao}"></li>
+                <li th:text="'Período Inicial: ' + ${header.periodoInicial}"></li>
+                <li th:text="'Período Final: ' + ${header.periodoFinal}"></li>
+                <li th:text="'Sequência: ' + ${header.sequencia}"></li>
+                <li th:text="'Empresa: ' + ${header.empresaAdquirente}"></li>
+                <li th:text="'Tipo do Extrato: ' + ${header.tipoExtrato}"></li>
+                <li th:text="'Filler: ' + ${header.filler}"></li>
+                <li th:text="'Versão Layout: ' + ${header.versaoLayout}"></li>
+                <li th:text="'Versao Release: ' + ${header.versaoRelease}"></li>
+            </ul>
+        </details>
 
+        <!-- TRAILER -->
+        <details>
+            <summary><strong>TRAILER</strong></summary>
+            <ul>
+                <li th:text="'Total de registros: ' + ${trailer.totalRegistro}"></li>
+            </ul>
+        </details>
 
-<details>
-    <summary><strong>TRAILER</strong></summary>
-    <ul>
-        <li th:text="'Total de registros: ' + ${trailer.totalRegistro}"></li>
-    </ul>
-</details>
+        <!-- DETALHES -->
+        <h2 class="escritoDetalhes">DETALHES</h2>
 
+        <!-- FILTRO -->
+        <form method="get" th:action="@{/dados}">
+            <div class="detalhesDosDetalhes">
+                <button class="botaoCamposVisiveis" type="submit">FILTRAR</button>
 
-<h2 class="escritoDetalhes">DETALHES</h2>
+                <div class="escolherData">
+                    <div class="dataEscolher">
+                        <label class="labelDaData" for="dataInicio">Data Início:</label>
+                        <input type="date" id="dataInicio" name="dataInicial" th:value="${dataInicial}">
+                    </div>
+                    <div class="dataEscolher">
+                        <label class="labelDaData" for="dataFim">Data Fim:</label>
+                        <input type="date" id="dataFim" name="dataFinal" th:value="${dataFinal}">
+                    </div>
+                </div>
 
-
-<form method="get" th:action="@{/dados}">
-    <div class="detalhesDosDetalhes">
-
-        <button class="botaoCamposVisiveis" type="submit">FILTRAR</button>
-
-        <div class="escolherData">
-            <div class="dataEscolher">
-                <label class="labelDaData" for="dataInicio">Data Início:</label>
-                <input type="date" id="dataInicio" name="dataInicial" th:value="${dataInicial}">
+                <div class="escolherInstituicao">
+                    <label for="filtroInstituicao">Instituição:</label>
+                    <select id="filtroInstituicao" name="instituicao" th:value="${instituicao}">
+                        <option value="">Todas</option>
+                        <option value="MASTERCARD" th:selected="${instituicao == 'MASTERCARD'}">MASTERCARD</option>
+                        <option value="VISA" th:selected="${instituicao == 'VISA'}">VISA</option>
+                    </select>
+                </div>
             </div>
-            <div class="dataEscolher">
-                <label class="labelDaData" for="dataFim">Data Fim:</label>
-                <input type="date" id="dataFim" name="dataFinal" th:value="${dataFinal}">
-            </div>
+        </form>
+
+        <!-- TABELA DE DETALHES -->
+        <div class="tabela-container">
+            <table class="tabela-detalhes">
+                <thead>
+                    <tr>
+                        <th>Tipo Registro</th>
+                        <th>Estabelecimento</th>
+                        <th>Data Transação</th>
+                        <th>Data Evento</th>
+                        <th>Hora Evento</th>
+                        <th>Tipo Evento</th>
+                        <th>Tipo Transação</th>
+                        <th>Número Série Leitor</th>
+                        <th>Código Transação</th>
+                        <th>Código Pedido</th>
+                        <th>Valor Total</th>
+                        <th>Valor Líquido</th>
+                        <th>Pagamento</th>
+                        <th>Plano</th>
+                        <th>Parcela</th>
+                        <th>Quantidade Parcelas</th>
+                        <th>Data Prevista Pagamento</th>
+                        <th>Taxa Parcelamento Comprador</th>
+                        <th>Tarifa Boleto Comprador</th>
+                        <th>Valor Original Transação</th>
+                        <th>Taxa Parcelamento Vendedor</th>
+                        <th>Taxa Intermediação</th>
+                        <th>Tarifa Boleto Vendedor</th>
+                        <th>Repasse Aplicação</th>
+                        <th>Valor Líquido Transação</th>
+                        <th>Status Pagamento</th>
+                        <th>Filler</th>
+                        <th>Meio Pagamento</th>
+                        <th>Instituição Financeira</th>
+                        <th>Canal Entrada</th>
+                        <th>Leitor</th>
+                        <th>Meio Captura</th>
+                        <th>Número Lógico</th>
+                        <th>NSU</th>
+                        <th>Filler 2</th>
+                        <th>Cartão BIN</th>
+                        <th>Cartão Holder</th>
+                        <th>Código Autorização</th>
+                        <th>Código CV</th>
+                        <th>Reservado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="d : ${detalhes}">
+                        <td th:text="${d.tipoRegistro}"></td>
+                        <td th:text="${d.estabelecimento}"></td>
+                        <td th:text="${d.dataTransacao}"></td>
+                        <td th:text="${d.dataEvento}"></td>
+                        <td th:text="${d.horaEvento}"></td>
+                        <td th:text="${d.tipoEvento}"></td>
+                        <td th:text="${d.tipoTransacao}"></td>
+                        <td th:text="${d.numeroSerieLeitor}"></td>
+                        <td th:text="${d.codigoTransacao}"></td>
+                        <td th:text="${d.codigoPedido}"></td>
+                        <td th:text="${d.valorTotal}"></td>
+                        <td th:text="${d.valorLiquido}"></td>
+                        <td th:text="${d.pagamento}"></td>
+                        <td th:text="${d.plano}"></td>
+                        <td th:text="${d.parcela}"></td>
+                        <td th:text="${d.quantidadeParcelas}"></td>
+                        <td th:text="${d.dataPrevistaPagamento}"></td>
+                        <td th:text="${d.taxaParcelamentoComprador}"></td>
+                        <td th:text="${d.tarifaBoletoComprador}"></td>
+                        <td th:text="${d.valorOriginalTransacao}"></td>
+                        <td th:text="${d.taxaParcelamentoVendedor}"></td>
+                        <td th:text="${d.taxaIntermediacao}"></td>
+                        <td th:text="${d.tarifaBoletoVendedor}"></td>
+                        <td th:text="${d.repasseAplicacao}"></td>
+                        <td th:text="${d.valorLiquidoTransacao}"></td>
+                        <td th:text="${d.statusPagamento}"></td>
+                        <td th:text="${d.filler}"></td>
+                        <td th:text="${d.meioPagamento}"></td>
+                        <td th:text="${d.instituicaoFinanceira}"></td>
+                        <td th:text="${d.canalEntrada}"></td>
+                        <td th:text="${d.leitor}"></td>
+                        <td th:text="${d.meioCaptura}"></td>
+                        <td th:text="${d.numeroLogico}"></td>
+                        <td th:text="${d.nsu}"></td>
+                        <td th:text="${d.filler2}"></td>
+                        <td th:text="${d.cartaoBin}"></td>
+                        <td th:text="${d.cartaoHolder}"></td>
+                        <td th:text="${d.codigoAutorizacao}"></td>
+                        <td th:text="${d.codigoCv}"></td>
+                        <td th:text="${d.reservado}"></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <div class="escolherInstituicao">
-            <label for="filtroInstituicao">Instituição:</label>
-            <select id="filtroInstituicao" name="instituicao" th:value="${instituicao}">
-                <option value="">Todas</option>
-                <option value="MASTERCARD" th:selected="${instituicao == 'MASTERCARD'}">MASTERCARD</option>
-                <option value="VISA" th:selected="${instituicao == 'VISA'}">VISA</option>
-            </select>
+        <!-- PAGINAÇÃO -->
+        <div class="paginacao">
+            <span th:if="${paginaAtual > 0}">
+                <a th:href="@{/dados(pagina=${paginaAtual - 1}, dataInicial=${dataInicial}, dataFinal=${dataFinal}, instituicao=${instituicao})}">
+                    ⟵ Anterior
+                </a>
+            </span>
+
+            <span>
+                Página <span th:text="${paginaAtual + 1}"></span>
+            </span>
+
+            <span th:if="${temProximaPagina}">
+                <a th:href="@{/dados(pagina=${paginaAtual + 1}, dataInicial=${dataInicial}, dataFinal=${dataFinal}, instituicao=${instituicao})}">
+                    Próxima ⟶
+                </a>
+            </span>
         </div>
-    </div>
-</form>
 
-<div class="tabela-container">
-
-  <table class="tabela-detalhes">
-        <thead>
-            <tr>
-                <th>Tipo Registro</th>
-                <th>Estabelecimento</th>
-                <th>Data Transação</th>
-                <th>Data Evento</th>
-                <th>Hora Evento</th>
-                <th>Tipo Evento</th>
-                <th>Tipo Transação</th>
-                <th>Número Série Leitor</th>
-                <th>Código Transação</th>
-                <th>Código Pedido</th>
-                <th>Valor Total</th>
-                <th>Valor Líquido</th>
-                <th>Pagamento</th>
-                <th>Plano</th>
-                <th>Parcela</th>
-                <th>Quantidade Parcelas</th>
-                <th>Data Prevista Pagamento</th>
-                <th>Taxa Parcelamento Comprador</th>
-                <th>Tarifa Boleto Comprador</th>
-                <th>Valor Original Transação</th>
-                <th>Taxa Parcelamento Vendedor</th>
-                <th>Taxa Intermediação</th>
-                <th>Tarifa Boleto Vendedor</th>
-                <th>Repasse Aplicação</th>
-                <th>Valor Líquido Transação</th>
-                <th>Status Pagamento</th>
-                <th>Filler</th>
-                <th>Meio Pagamento</th>
-                <th>Instituição Financeira</th>
-                <th>Canal Entrada</th>
-                <th>Leitor</th>
-                <th>Meio Captura</th>
-                <th>Número Lógico</th>
-                <th>NSU</th>
-                <th>Filler 2</th>
-                <th>Cartão BIN</th>
-                <th>Cartão Holder</th>
-                <th>Código Autorização</th>
-                <th>Código CV</th>
-                <th>Reservado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="d : ${detalhes}">
-                <td th:text="${d.tipoRegistro}"></td>
-                <td th:text="${d.estabelecimento}"></td>
-                <td th:text="${d.dataTransacao}"></td>
-                <td th:text="${d.dataEvento}"></td>
-                <td th:text="${d.horaEvento}"></td>
-                <td th:text="${d.tipoEvento}"></td>
-                <td th:text="${d.tipoTransacao}"></td>
-                <td th:text="${d.numeroSerieLeitor}"></td>
-                <td th:text="${d.codigoTransacao}"></td>
-                <td th:text="${d.codigoPedido}"></td>
-                <td th:text="${d.valorTotal}"></td>
-                <td th:text="${d.valorLiquido}"></td>
-                <td th:text="${d.pagamento}"></td>
-                <td th:text="${d.plano}"></td>
-                <td th:text="${d.parcela}"></td>
-                <td th:text="${d.quantidadeParcelas}"></td>
-                <td th:text="${d.dataPrevistaPagamento}"></td>
-                <td th:text="${d.taxaParcelamentoComprador}"></td>
-                <td th:text="${d.tarifaBoletoComprador}"></td>
-                <td th:text="${d.valorOriginalTransacao}"></td>
-                <td th:text="${d.taxaParcelamentoVendedor}"></td>
-                <td th:text="${d.taxaIntermediacao}"></td>
-                <td th:text="${d.tarifaBoletoVendedor}"></td>
-                <td th:text="${d.repasseAplicacao}"></td>
-                <td th:text="${d.valorLiquidoTransacao}"></td>
-                <td th:text="${d.statusPagamento}"></td>
-                <td th:text="${d.filler}"></td>
-                <td th:text="${d.meioPagamento}"></td>
-                <td th:text="${d.instituicaoFinanceira}"></td>
-                <td th:text="${d.canalEntrada}"></td>
-                <td th:text="${d.leitor}"></td>
-                <td th:text="${d.meioCaptura}"></td>
-                <td th:text="${d.numeroLogico}"></td>
-                <td th:text="${d.nsu}"></td>
-                <td th:text="${d.filler2}"></td>
-                <td th:text="${d.cartaoBin}"></td>
-                <td th:text="${d.cartaoHolder}"></td>
-                <td th:text="${d.codigoAutorizacao}"></td>
-                <td th:text="${d.codigoCv}"></td>
-                <td th:text="${d.reservado}"></td>
-            </tr>
-        </tbody>
-    </table>
     </div>
 
-   <div class="paginacao">
-    <span th:if="${paginaAtual > 0}">
-        <a th:href="@{/dados(pagina=${paginaAtual - 1}, 
-                            dataInicial=${dataInicial}, 
-                            dataFinal=${dataFinal}, 
-                            instituicao=${instituicao})}">⟵ Anterior</a>
-    </span>
-
-    <span> Página <span th:text="${paginaAtual + 1}"></span> </span>
-
-    <span th:if="${temProximaPagina}">
-        <a th:href="@{/dados(pagina=${paginaAtual + 1}, 
-                            dataInicial=${dataInicial}, 
-                            dataFinal=${dataFinal}, 
-                            instituicao=${instituicao})}">Próxima ⟶</a>
-    </span>
-</div>
-
-</div>
-
-<script th:src="@{/js/resultado.js}"></script>
+    <script th:src="@{/js/resultado.js}"></script>
 </body>
 </html>

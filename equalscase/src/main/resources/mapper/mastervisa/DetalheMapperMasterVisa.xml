@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gabriel.equalscase.mapper.mastervisa.DetalheMapperMasterVisa">
 
+    <!-- Inserção de detalhe com campos base reutilizáveis + campos específicos da bandeira -->
     <insert id="insert" parameterType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
         INSERT INTO detalhe (
-            <include refid="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns.CamposDetalheBase"/>,
+            <include refid="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns.CamposDetalheBase" />,
             canal_entrada, leitor, meio_captura, numero_logico, nsu,
             filler2, cartao_bin, cartao_holder, codigo_autorizacao, codigo_cv, reservado
         ) VALUES (
-            <include refid="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns.ValoresDetalheBase"/>,
+            <include refid="com.gabriel.equalscase.mapper.mastervisa.FragmentosComuns.ValoresDetalheBase" />,
             #{canalEntrada}, #{leitor}, #{meioCaptura}, #{numeroLogico}, #{nsu},
             #{filler2}, #{cartaoBin}, #{cartaoHolder}, #{codigoAutorizacao}, #{codigoCv}, #{reservado}
         )
     </insert>
 
-
+    <!-- Consulta simples: retorna todos os registros -->
     <select id="findAll" resultType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
         SELECT * FROM detalhe
     </select>
 
+    <!-- Consulta paginada com filtros dinâmicos -->
     <select id="buscarPaginado" resultType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
         SELECT * FROM detalhe
         <where>
-        <if test="dataInicial != null and dataInicial != ''">
-            AND data_transacao &gt;= #{dataInicial}::date
-        </if>
-        <if test="dataFinal != null and dataFinal != ''">
-            AND data_transacao &lt;= #{dataFinal}::date
-        </if>
-        <if test="instituicao != null and instituicao != ''">
-            AND instituicao_financeira = #{instituicao}
-        </if>
-    </where>
+            <if test="dataInicial != null and dataInicial != ''">
+                AND data_transacao &gt;= #{dataInicial}::date
+            </if>
+            <if test="dataFinal != null and dataFinal != ''">
+                AND data_transacao &lt;= #{dataFinal}::date
+            </if>
+            <if test="instituicao != null and instituicao != ''">
+                AND instituicao_financeira = #{instituicao}
+            </if>
+        </where>
         ORDER BY id
         LIMIT #{tamanho} OFFSET #{offset}
     </select>
 
-
-        <select id="contarFiltrado" resultType="int">
+    <!-- Contador para suporte à paginação com filtros -->
+    <select id="contarFiltrado" resultType="int">
         SELECT COUNT(*)
         FROM detalhe
-            <where>
-                <if test="dataInicial != null and dataInicial != ''">
-                    AND data_transacao &gt;= #{dataInicial}::date
-                </if>
-                <if test="dataFinal != null and dataFinal != ''">
-                    AND data_transacao &lt;= #{dataFinal}::date
-                </if>
-                <if test="instituicao != null and instituicao != ''">
-                    AND instituicao_financeira = #{instituicao}
-                </if>
-            </where>
-        </select>
+        <where>
+            <if test="dataInicial != null and dataInicial != ''">
+                AND data_transacao &gt;= #{dataInicial}::date
+            </if>
+            <if test="dataFinal != null and dataFinal != ''">
+                AND data_transacao &lt;= #{dataFinal}::date
+            </if>
+            <if test="instituicao != null and instituicao != ''">
+                AND instituicao_financeira = #{instituicao}
+            </if>
+        </where>
+    </select>
 
 </mapper>
-
