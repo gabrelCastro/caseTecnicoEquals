@@ -153,7 +153,11 @@ input[type="date"]:focus {
     gap:10px;
 }
 
-#filtroInstituicao{
+.bandeira{
+    margin-bottom: 3vw;
+}
+
+#filtroInstituicao,#bandeira{
     width: 15vw;
     height: 3vw;
     padding: 10px 14px;

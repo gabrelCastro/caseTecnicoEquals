@@ -5,7 +5,7 @@ import com.gabriel.equalscase.model.base.Header;
 import com.gabriel.equalscase.model.base.Trailer;
 
 public interface LeitorVendas {
-    Header lerHeader(String linha);
-    Detalhe lerDetalhe(String linha);
-    Trailer lerTrailer(String linha);
+    public Header lerHeader(String linha);
+    public Detalhe lerDetalhe(String linha);
+    public Trailer lerTrailer(String linha);
 }

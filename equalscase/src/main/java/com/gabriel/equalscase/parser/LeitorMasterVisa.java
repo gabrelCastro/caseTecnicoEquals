@@ -12,6 +12,40 @@ import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
 import com.gabriel.equalscase.model.visamaster.HeaderMasterVisa;
 import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
 
+
+/**
+ * Implementação do parser para arquivos de vendas das bandeiras Visa e MasterCard.
+ *
+ * Esta classe faz parte da lógica de leitura de arquivos no padrão definido pelas bandeiras
+ * Visa/MasterCard, onde cada linha do arquivo representa um tipo de registro:
+ * - Tipo 0: Header
+ * - Tipo 1: Detalhe
+ * - Tipo 9: Trailer
+ *
+ * Responsabilidade principal:
+ * - Interpretar linhas do arquivo e convertê-las em objetos Java específicos (`HeaderMasterVisa`,
+ *   `DetalheMasterVisa` e `TrailerMasterVisa`), preenchendo os dados conforme as posições fixas
+ *   de cada campo no layout.
+ *
+ * Contexto de uso:
+ * - Utilizada durante o processo de leitura e importação de arquivos texto, no momento em que
+ *   as informações precisam ser transformadas em objetos de domínio para persistência no banco
+ *   via MyBatis.
+ *
+ * Relacionamentos:
+ * - Implementa a interface LeitorVendas, que define os métodos padrão de leitura de
+ *   registros do tipo header, detalhe e trailer.
+ * - Utiliza os modelos definidos em com.gabriel.equalscase.model.visamaster.
+ *
+ * Observações:
+ * - Os campos de data e hora são convertidos utilizando `DateTimeFormatter`.
+ * - Valores monetários são convertidos para `BigDecimal` com precisão de 2 casas decimais.
+ * - A leitura respeita o comprimento fixo da linha conforme o layout especificado.
+ *
+ * Autor: Gabriel Ferreira
+ */
+
+
 public class LeitorMasterVisa implements LeitorVendas{
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");

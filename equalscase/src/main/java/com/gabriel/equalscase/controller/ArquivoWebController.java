@@ -1,9 +1,7 @@
 package com.gabriel.equalscase.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,100 +13,89 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gabriel.equalscase.mapper.base.DetalheMapper;
 import com.gabriel.equalscase.mapper.base.HeaderMapper;
 import com.gabriel.equalscase.mapper.base.TrailerMapper;
-import com.gabriel.equalscase.mapper.mastervisa.DetalheMapperMasterVisa;
-import com.gabriel.equalscase.mapper.mastervisa.HeaderMapperMasterVisa;
-import com.gabriel.equalscase.mapper.mastervisa.TrailerMapperMasterVisa;
-import com.gabriel.equalscase.model.base.Detalhe;
 import com.gabriel.equalscase.model.base.Header;
 import com.gabriel.equalscase.model.base.Trailer;
-import com.gabriel.equalscase.model.visamaster.DetalheMasterVisa;
-import com.gabriel.equalscase.model.visamaster.HeaderMasterVisa;
-import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
-import com.gabriel.equalscase.parser.LeitorMasterVisa;
-import com.gabriel.equalscase.parser.LeitorVendas;
+import com.gabriel.equalscase.service.ProcessadorArquivoService;
+
 
 @Controller
 public class ArquivoWebController {
 
-    // Mappers de cada entidade
-    private final HeaderMapper<HeaderMasterVisa> headerMapper;
-    private final DetalheMapper<DetalheMasterVisa> detalheMapper;
-    private final TrailerMapper<TrailerMasterVisa> trailerMapper;
+    private final ProcessadorArquivoService processadorArquivoService;
+    private final Map<String, HeaderMapper<?>> headerMappers;
+    private final Map<String, DetalheMapper<?>> detalheMappers;
+    private final Map<String, TrailerMapper<?>> trailerMappers;
 
-    // Construtor do Controller, que recebe os mappers como parâmetro
-    public ArquivoWebController(HeaderMapperMasterVisa headerMapper,
-                                DetalheMapperMasterVisa detalheMapper,
-                                TrailerMapperMasterVisa trailerMapper) {
-        this.headerMapper = headerMapper;
-        this.detalheMapper = detalheMapper;
-        this.trailerMapper = trailerMapper;
+    public ArquivoWebController(
+            ProcessadorArquivoService processadorArquivoService,
+            Map<String, HeaderMapper<?>> headerMappers,
+            Map<String, DetalheMapper<?>> detalheMappers,
+            Map<String, TrailerMapper<?>> trailerMappers) {
+
+        this.processadorArquivoService = processadorArquivoService;
+        this.headerMappers = headerMappers;
+        this.detalheMappers = detalheMappers;
+        this.trailerMappers = trailerMappers;
     }
 
-    // Define que a rota principal vai retornar um html para que o arquivo seja submetido
     @GetMapping("/")
-    public String form() {
+    public String form(Model model) {
         return "upload-form";
     }
 
-    // Rota que é chamada no momento em que arquivo é enviado
     @PostMapping("/processar")
-    public String processar(@RequestParam("file") MultipartFile file, Model model) {
-        Header header = new HeaderMasterVisa(); // variável que guarda o Header
-        Trailer trailer = null; // variável que guarda o Trailer
-        List<Detalhe> detalhes = new ArrayList<>(); // Variável para guardar os detalhes
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            String linha;
-            LeitorVendas leitor = new LeitorMasterVisa();
-
-            while ((linha = reader.readLine()) != null) {
-                if (linha.isEmpty()) continue; // Se a linha estiver vazia, pula
-
-                switch (linha.charAt(0)) { // Olha o primeiro caracter da linha para verificar qual o tipo
-                    case '0':
-                        header = leitor.lerHeader(linha); // Manda a linha lida para o parser do Header
-                        headerMapper.insert((HeaderMasterVisa) header); // Chama o Mapper que por sua vez vai executar o comando no XML
-                        break;
-                    case '1':
-                        Detalhe detalhe = leitor.lerDetalhe(linha);// Manda a linha lida para o parser do Detalhe
-                        detalheMapper.insert((DetalheMasterVisa) detalhe); // Chama o Mapper que por sua vez vai executar o comando no XML
-                        detalhes.add(detalhe);
-                        break;
-                    case '9':
-                        trailer = leitor.lerTrailer(linha); // Manda a linha lida para o parser do Trailer
-                        trailerMapper.insert((TrailerMasterVisa) trailer); // Chama o Mapper que por sua vez vai executar o comando no XML
-                        break;
-                }
-            }
-
+    public String processar(@RequestParam("file") MultipartFile file,
+                            @RequestParam("bandeira") String bandeira,
+                            Model model) {
+        try {
+            processadorArquivoService.processarArquivo(file, bandeira.toLowerCase());
             return "redirect:/dados";
-
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao processar: " + e.getMessage());
+            model.addAttribute("bandeiras", List.of("mastervisa"));
             return "upload-form";
         }
     }
 
     @GetMapping("/dados")
-    public String verDados(@RequestParam(defaultValue = "0") int pagina, @RequestParam(required = false) String dataInicial,
-        @RequestParam(required = false) String dataFinal,
-        @RequestParam(required = false) String instituicao,Model model) {
+    public String verDados(@RequestParam(defaultValue = "0") int pagina,
+                           @RequestParam(required = false) String dataInicial,
+                           @RequestParam(required = false) String dataFinal,
+                           @RequestParam(required = false) String instituicao,
+                           @RequestParam(defaultValue = "mastervisa") String bandeira,
+                           Model model) {
+
         int tamanhoPagina = 25;
         int offset = pagina * tamanhoPagina;
-        Header header =  headerMapper.findFirst(); // Exemplo: você deve popular isso com dados reais
-        Trailer trailer = trailerMapper.findFirst(); // Também precisa ser carregado se for usado na view
-        List<DetalheMasterVisa> detalhes = detalheMapper.buscarPaginado(dataInicial, dataFinal, instituicao,offset, tamanhoPagina); // Consulta os detalhes no banco
-        int totalRegistros = detalheMapper.contarFiltrado(dataInicial, dataFinal, instituicao); 
 
-        model.addAttribute("header", header);      // se for usar na view
-        model.addAttribute("trailer", trailer);    // idem
-        model.addAttribute("detalhes", detalhes);  // lista para a tabela
+        String hKey = bandeira + "HeaderMapper";
+        String dKey = bandeira + "DetalheMapper";
+        String tKey = bandeira + "TrailerMapper";
+
+        HeaderMapper<?> headerMapper = headerMappers.get(hKey);
+        DetalheMapper<?> detalheMapper = detalheMappers.get(dKey);
+        TrailerMapper<?> trailerMapper = trailerMappers.get(tKey);
+
+        if (headerMapper == null || detalheMapper == null || trailerMapper == null) {
+            model.addAttribute("erro", "Mapper da bandeira '" + bandeira + "' não encontrado.");
+            return "upload-form";
+        }
+
+        Header header = headerMapper.findFirst();
+        Trailer trailer = trailerMapper.findFirst();
+        List<?> detalhes = detalheMapper.buscarPaginado(dataInicial, dataFinal, instituicao, offset, tamanhoPagina);
+        int total = detalheMapper.contarFiltrado(dataInicial, dataFinal, instituicao);
+
+        model.addAttribute("header", header);
+        model.addAttribute("trailer", trailer);
+        model.addAttribute("detalhes", detalhes);
         model.addAttribute("paginaAtual", pagina);
         model.addAttribute("instituicao", instituicao);
         model.addAttribute("dataInicial", dataInicial);
         model.addAttribute("dataFinal", dataFinal);
-        model.addAttribute("temProximaPagina", (offset + tamanhoPagina) < totalRegistros);
+        model.addAttribute("temProximaPagina", (offset + tamanhoPagina) < total);
+        model.addAttribute("bandeira", bandeira);
 
-        return "resultado"; // thymeleaf procura por resultado.html em src/main/resources/templates/
-}
+        return "resultado";
+    }
 }
