@@ -19,7 +19,7 @@ public class Header {
     private String tipoRegistro;
 
     /** Código do estabelecimento ao qual o relatório pertence */
-    private Long estabelecimento;
+    private String estabelecimento;
 
     /** Data em que o arquivo foi gerado */
     private LocalDate dataGeracao;
@@ -59,8 +59,8 @@ public class Header {
     public String getTipoRegistro() { return tipoRegistro; }
     public void setTipoRegistro(String tipoRegistro) { this.tipoRegistro = tipoRegistro; }
 
-    public Long getEstabelecimento() { return estabelecimento; }
-    public void setEstabelecimento(Long estabelecimento) { this.estabelecimento = estabelecimento; }
+    public String getEstabelecimento() { return estabelecimento; }
+    public void setEstabelecimento(String estabelecimento) { this.estabelecimento = estabelecimento; }
 
     public LocalDate getDataGeracao() { return dataGeracao; }
     public void setDataGeracao(LocalDate dataGeracao) { this.dataGeracao = dataGeracao; }

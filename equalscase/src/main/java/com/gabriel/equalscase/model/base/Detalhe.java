@@ -23,7 +23,7 @@ public class Detalhe {
     private String tipoRegistro;
 
     /** Código do estabelecimento onde a transação ocorreu */
-    private Long estabelecimento;
+    private String estabelecimento;
 
     /** Data da transação */
     private LocalDate dataTransacao;
@@ -114,8 +114,8 @@ public class Detalhe {
     public String getTipoRegistro() { return tipoRegistro; }
     public void setTipoRegistro(String tipoRegistro) { this.tipoRegistro = tipoRegistro; }
 
-    public Long getEstabelecimento() { return estabelecimento; }
-    public void setEstabelecimento(Long estabelecimento) { this.estabelecimento = estabelecimento; }
+    public String getEstabelecimento() { return estabelecimento; }
+    public void setEstabelecimento(String estabelecimento) { this.estabelecimento = estabelecimento; }
 
     public LocalDate getDataTransacao() { return dataTransacao; }
     public void setDataTransacao(LocalDate dataTransacao) { this.dataTransacao = dataTransacao; }

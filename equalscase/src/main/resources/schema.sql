@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS trailer;
 CREATE TABLE header (
     id SERIAL PRIMARY KEY,
     tipo_registro CHAR(1) NOT NULL CHECK (tipo_registro = '0'),
-    estabelecimento BIGINT NOT NULL,
+    estabelecimento CHAR(10) NOT NULL,
     data_geracao DATE NOT NULL,
     periodo_inicial DATE NOT NULL,
     periodo_final DATE NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE header (
 CREATE TABLE detalhe (
     id SERIAL PRIMARY KEY,
     tipo_registro CHAR(1) NOT NULL CHECK (tipo_registro = '1'),
-    estabelecimento BIGINT NOT NULL,
+    estabelecimento CHAR(10) NOT NULL,
     data_transacao DATE NOT NULL,
     data_evento DATE NOT NULL,
     hora_evento TIME NOT NULL,

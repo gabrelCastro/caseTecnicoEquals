@@ -49,7 +49,7 @@ public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheM
 
         HeaderMasterVisa h = new HeaderMasterVisa();
         h.setTipoRegistro(linha.substring(0, 1));
-        h.setEstabelecimento(Long.parseLong(linha.substring(1, 11)));
+        h.setEstabelecimento(linha.substring(1, 11));
         h.setDataGeracao(LocalDate.parse(linha.substring(11, 19), df));
         h.setPeriodoInicial(LocalDate.parse(linha.substring(19, 27), df));
         h.setPeriodoFinal(LocalDate.parse(linha.substring(27, 35), df));
@@ -75,7 +75,7 @@ public class LeitorMasterVisa implements LeitorVendas<HeaderMasterVisa, DetalheM
         DetalheMasterVisa d = new DetalheMasterVisa();
 
         d.setTipoRegistro(linha.substring(0, 1));
-        d.setEstabelecimento(Long.parseLong(linha.substring(1, 11)));
+        d.setEstabelecimento(linha.substring(1, 11));
         d.setDataTransacao(LocalDate.parse(linha.substring(11, 19), DATE_FORMAT));
         d.setDataEvento(LocalDate.parse(linha.substring(19, 27), DATE_FORMAT));
         d.setHoraEvento(LocalTime.parse(linha.substring(27, 33), TIME_FORMAT));
