@@ -2,9 +2,9 @@
 
 ## Executar projeto
 
-Java: OpenJDK 17.0.15 (build 17.0.15+0, release em 2025-04-15)
-PostgreSQL: V15.O
-Spring Boot: 3.4.6
+- Java: OpenJDK 17.0.15 (build 17.0.15+0, release em 2025-04-15)
+- PostgreSQL: V15.O
+- Spring Boot: 3.4.6
 
 ---
 Para o banco de dados, foi utilizado um container do PostgreSQL:
