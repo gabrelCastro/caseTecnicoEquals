@@ -124,6 +124,7 @@ public class ArquivoWebController {
         // Executa as consultas no banco usando os mappers apropriados
         Header header = headerMapper.findFirst();
         Trailer trailer = trailerMapper.findFirst();
+        int tamanho = detalheMapper.count();
         List<?> detalhes = detalheMapper.buscarPaginado(dataInicial, dataFinal, instituicao, offset, tamanhoPagina);
         int total = detalheMapper.contarFiltrado(dataInicial, dataFinal, instituicao);
 
@@ -137,6 +138,14 @@ public class ArquivoWebController {
         model.addAttribute("dataFinal", dataFinal);
         model.addAttribute("temProximaPagina", (offset + tamanhoPagina) < total);
         model.addAttribute("bandeira", bandeira);
+
+        if(trailer.getTotalRegistro() != tamanho){
+            model.addAttribute("verificacao", false);
+            model.addAttribute("totalDetalhes", tamanho);
+        }
+        else{
+            model.addAttribute("verificacao", true);
+        }
 
         return "resultado";
     }

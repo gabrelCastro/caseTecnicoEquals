@@ -36,6 +36,8 @@
             <summary><strong>TRAILER</strong></summary>
             <ul>
                 <li th:text="'Total de registros: ' + ${trailer.totalRegistro}"></li>
+                <p class="avisoVerificacao" th:unless="${verificacao}">Alerta! Total de Registros não confere com número no Trailer.</p>
+                <p class="avisoVerificacao" th:unless="${verificacao}">Total de registros encontrados nos detalhes: <span th:text="${totalDetalhes}"></span></p>
             </ul>
         </details>
 

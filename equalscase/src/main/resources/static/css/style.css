@@ -238,3 +238,8 @@ input[type="date"]:focus {
 .paginacao a:hover {
     text-decoration: underline;
 }
+
+.avisoVerificacao{
+    color: rgb(158, 0, 0);
+    font-size: 1vw;
+}

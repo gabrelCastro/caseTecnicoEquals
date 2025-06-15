@@ -13,14 +13,20 @@ import com.gabriel.equalscase.model.visamaster.TrailerMasterVisa;
 
 public class LeitorMasterVisaTest {
 
+    // Alocando o leitor específico da bandeira
     private final LeitorMasterVisa leitor = new LeitorMasterVisa();
 
 
     @Test
     void deveParsearHeader() {
+        // Linha simulada do header
         String linha = "012345678912018102320191023202010231234567FICTI01A                    002.002c";
+
+        // Guardando header simulado
         Header h = leitor.lerHeader(linha);
 
+
+        // Verificando cada atributo do Header
         assertThat(h.getTipoRegistro()).isEqualTo("0");
         assertThat(h.getDataGeracao()).isEqualTo(LocalDate.of(2018, 10, 23));
         assertThat(h.getPeriodoFinal()).isEqualTo(LocalDate.of(2020, 10, 23));
@@ -33,6 +39,7 @@ public class LeitorMasterVisaTest {
     void deveParsearDetalhe() {
         StringBuilder sb = new StringBuilder();
 
+        // Linha simulada do detalhe
         sb.append("1");                              // 1 - Tipo de registro
         sb.append("0000001234");                     // 10 - Estabelecimento
         sb.append("20240101");                       // 8 - Data inicial transação
@@ -75,8 +82,10 @@ public class LeitorMasterVisaTest {
         sb.append(String.format("%-32s", "CVCODE1234567890"));    // 32 - Código do CV
         sb.append("0".repeat(139));   // 139 - Reservado
 
+        // Guardando o detalhe lido pelo parser
         DetalheMasterVisa d = leitor.lerDetalhe(sb.toString());
 
+        // Verificando cada atributo do Detalhe
         assertThat(d.getMeioPagamento()).isEqualTo("02");
         assertThat(d.getNumeroLogico()).isEqualTo("1234567890TEFLOGICO");
         assertThat(d.getTipoRegistro()).isEqualTo("1");
@@ -96,12 +105,13 @@ public class LeitorMasterVisaTest {
     void deveParsearTrailer() {
         StringBuilder sb = new StringBuilder();
 
+        // Simulando linhas do Trailer
         sb.append("9");                              // 1 - Tipo de registro
-        sb.append("00000000025");                     // 10 - Estabelecimento
-        sb.append("0".repeat(518));
+        sb.append("00000000025");                    // 2 - Quantidade de detalhes
+        sb.append("0".repeat(518));                  // 3 - Reservado
         TrailerMasterVisa t = leitor.lerTrailer(sb.toString());
                 
-
+        // Verificando campos do Trailer
         assertThat(t.getTipoRegistro()).isEqualTo("9");
         assertThat(t.getTotalRegistro()).isEqualTo(25);
     }

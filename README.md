@@ -2,13 +2,20 @@
 
 ## Executar projeto
 
----
+Java: OpenJDK 17.0.15 (build 17.0.15+0, release em 2025-04-15)
+PostgreSQL: V15.O
+Spring Boot: 3.4.6
 
-    docker run --name postgres-equals   -e POSTGRES_USER=postgres   -e POSTGRES_PASSWORD=123456   -e POSTGRES_DB=equalsdb   -p 5432:5432   -d postgres:15
+---
+Para o banco de dados, foi utilizado um container do PostgreSQL:
+
+    docker run --name postgres-equals   -e POSTGRES_USER=postgres   -e POSTGRES_PASSWORD=123456   -e POSTGRES_DB=equalsdb   -p 5432:5432   -d postgres:15.0
 
     sudo docker exec -it postgres-equals psql -U postgres -d equalsdb
 
 ### Definir variáveis de ambiente
+
+Os campos colocados são penas exemplo!
 
 No windows:
 ```
@@ -164,6 +171,32 @@ Exemplo:
 @Component("mastervisaLeitor")
 ```
 
+---
+
+### Estratégia de paginação usando MyBatis
+
+<!-- Consulta paginada com filtros dinâmicos -->
+
+```
+    <select id="buscarPaginado" resultType="com.gabriel.equalscase.model.visamaster.DetalheMasterVisa">
+        SELECT * FROM detalhe
+        <where>
+            <if test="dataInicial != null and dataInicial != ''">
+                AND data_transacao &gt;= #{dataInicial}::date
+            </if>
+            <if test="dataFinal != null and dataFinal != ''">
+                AND data_transacao &lt;= #{dataFinal}::date
+            </if>
+            <if test="instituicao != null and instituicao != ''">
+                AND instituicao_financeira = #{instituicao}
+            </if>
+        </where>
+        ORDER BY id
+        LIMIT #{tamanho} OFFSET #{offset}
+    </select>
+```
+
+Esse select basicamente retorna os dados dos detalhes de acordo com o "estado" da consulta. Se existir uma data final, ele adiciona na pesquisa, o mesmo com a data inicial e instituição. O offset serve para dar o ponto de partida dos dados do select, basicamente para pular as linhas.
 ---
 
 ## Padrões de Projeto Utilizados

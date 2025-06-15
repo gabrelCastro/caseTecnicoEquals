@@ -16,6 +16,8 @@ import com.gabriel.equalscase.model.base.Detalhe;
  */
 public interface DetalheMapper<T extends Detalhe> {
 
+    int count();
+
     /**
      * Insere um registro do tipo Detalhe no banco de dados.
      *
