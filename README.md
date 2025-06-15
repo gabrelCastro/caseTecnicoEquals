@@ -5,7 +5,6 @@
 - Java: OpenJDK 17.0.15 (build 17.0.15+0, release em 2025-04-15)
 - PostgreSQL: V15.O
 - Spring Boot: 3.4.6
-
 ---
 Para o banco de dados, foi utilizado um container do PostgreSQL:
 
@@ -29,8 +28,15 @@ export DB_USER=postgres
 export DB_PASS=123456
 ```
 
+### Testes Unitários
+
+    cd equalscase/
+
+    mvn test
 
 ### Execução
+
+    cd equalscase/
 
     ./mvnw spring-boot:run
 
