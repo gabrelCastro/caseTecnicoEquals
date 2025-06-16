@@ -44,7 +44,7 @@ export DB_PASS=123456
 
 ## Elaboração do projeto
 
-Essa aplicação foi planejada com a arquitetura **MVC(Model-View-Controller)**, pelo motivo de que tenho mais familiaridade com esse modelo e acredito que, para a tarefa em questão, seja adequado devido ao grau mais baixo de funcionalidades. Além disso, separar o Front e o Back seria bem mais trabalhoso e desnecessário visto que o projeto tem apenas 3 páginas. 
+Essa aplicação foi planejada com a arquitetura **MVC(Model-View-Controller)**, pelo motivo de que tenho mais familiaridade com esse modelo e acredito que, para a tarefa em questão, seja adequado devido ao grau mais baixo de funcionalidades. Além disso, separar o Front e o Back seria bem mais trabalhoso e desnecessário visto que o projeto tem apenas 2 páginas. 
 
 ![](./Documentacao/Fotos/modeloMVC.png)
 
