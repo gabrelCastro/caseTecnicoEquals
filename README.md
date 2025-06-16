@@ -40,6 +40,16 @@ export DB_PASS=123456
 
     ./mvnw spring-boot:run
 
+### Rotas
+
+Rota para enviar o arquivo:
+
+    http://localhost:8080/
+
+Rota para visualizar os dados:
+
+    http://localhost:8080/dados
+
 
 
 ## Elaboração do projeto
