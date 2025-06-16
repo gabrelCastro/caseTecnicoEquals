@@ -14,7 +14,7 @@ Para o banco de dados, foi utilizado um container do PostgreSQL:
 
 ### Definir variáveis de ambiente
 
-Os campos colocados são penas exemplo!
+Os campos colocados são apenas exemplo!
 
 No windows:
 ```
